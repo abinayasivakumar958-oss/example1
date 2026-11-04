@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Student Data Management - push & pop</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      max-width: 600px;
+      margin: 30px auto;
+      padding: 0 20px;
+    }
+    .form-group {
+      margin-bottom: 10px;
+    }
+    label {
+      display: inline-block;
+      width: 100px;
+    }
+    input {
+      padding: 5px;
+      width: 200px;
+    }
+    button {
+      padding: 8px 14px;
+      margin-right: 10px;
+      margin-top: 10px;
+      cursor: pointer;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 20px;
+    }
+    th, td {
+      border: 1px solid #ccc;
+      padding: 8px;
+      text-align: left;
+    }
+    th {
+      background-color: #f4f4f4;
+    }
+    .output-box {
+      margin-top: 15px;
+      padding: 10px;
+      background-color: #f9f9f9;
+      border: 1px solid #ddd;
+    }
+  </style>
+</head>
+<body>
+
+  <h2>Student Data Management</h2>
+
+  <div class="form-group">
+    <label for="studentId">ID:</label>
+    <input type="number" id="studentId" placeholder="e.g., 104">
+  </div>
+  <div class="form-group">
+    <label for="studentName">Name:</label>
+    <input type="text" id="studentName" placeholder="e.g., David">
+  </div>
+  <div class="form-group">
+    <label for="dept">Department:</label>
+    <input type="text" id="dept" placeholder="e.g., CSE">
+  </div>
+  <div class="form-group">
+    <label for="marks">Mark:</label>
+    <input type="number" id="marks" placeholder="e.g., 88">
+  </div>
+
+  <button onclick="addStudent()">Add Student (push)</button>
+  <button onclick="removeStudent()">Remove Last Student (pop)</button>
+
+  <h3>Student List</h3>
+  <table>
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>Name</th>
+        <th>Department</th>
+        <th>Mark</th>
+      </tr>
+    </thead>
+    <tbody id="studentTableBody"></tbody>
+  </table>
+
+  <div id="output" class="output-box">Perform an action using push or pop.</div>
+
+  <script>
+    // Initial student array
+    let students = [
+      { id: 101, name: "Alice", department: "CSE", mark: 85 },
+      { id: 102, name: "Bob", department: "ECE", mark: 72 },
+      { id: 103, name: "Charlie", department: "IT", mark: 90 }
+    ];
+
+    // Function to display students in table
+    function displayStudents() {
+      const tbody = document.getElementById("studentTableBody");
+      tbody.innerHTML = "";
+
+      students.forEach(student => {
+        const row = document.createElement("tr");
+        row.innerHTML = `
+          <td>${student.id}</td>
+          <td>${student.name}</td>
+          <td>${student.department}</td>
+          <td>${student.mark}</td>
+        `;
+        tbody.appendChild(row);
+      });
+    }
+
+    // Add student using push()
+    function addStudent() {
+      const id = document.getElementById("studentId").value;
+      const name = document.getElementById("studentName").value;
+      const department = document.getElementById("dept").value;
+      const mark = document.getElementById("marks").value;
+
+      if (!id || !name || !department || !mark) {
+        alert("Please fill in all fields.");
+        return;
+      }
+
+      const newStudent = { id, name, department, mark };
+      
+      // push() adds a new item to the end of the array
+      students.push(newStudent);
+
+      displayStudents();
+      document.getElementById("output").innerText = `Added student: ${name}`;
+
+      // Reset form
+      document.getElementById("studentId").value = "";
+      document.getElementById("studentName").value = "";
+      document.getElementById("dept").value = "";
+      document.getElementById("marks").value = "";
+    }
+
+    // Remove last student using pop()
+    function removeStudent() {
+      if (students.length === 0) {
+        alert("No students left to remove.");
+        return;
+      }
+
+      // pop() removes the last item from the array
+      const removedStudent = students.pop();
+
+      displayStudents();
+      document.getElementById("output").innerText = `Removed student: ${removedStudent.name} (ID: ${removedStudent.id})`;
+    }
+
+    // Initial table render
+    displayStudents();
+  </script>
+
+</body>
+</html>
